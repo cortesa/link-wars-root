@@ -1,0 +1,10 @@
+---
+trigger: always_on
+---
+
+## Project Rules & Agreements
+
+1. **Language**: We speak and interact in Spanish or other languages, but all the documentation, code, code comments, and technical outputs MUST be in **English**.
+2. **Package Manager**: **Yarn** is the mandatory package manager. Do not use npm or pnpm.
+3. **Methodology**: Follow a strict **TDD (Test-Driven Development)** approach for all service development.
+4. **Architecture**: Respect the **Standalone Services** (Poly-repo) structure.
