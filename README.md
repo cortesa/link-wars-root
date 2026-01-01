@@ -45,7 +45,7 @@ yarn install
 The easiest way to start is using Docker Compose, which handles all services and infrastructure (DBs, Redis) with **Hot Reload** enabled.
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 - **Cashier API**: [localhost:3000](http://localhost:3000)

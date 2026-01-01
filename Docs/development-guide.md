@@ -17,10 +17,10 @@ We use Docker Compose to orchestrate all services with **Hot Reload** enabled.
 
 ```bash
 # Start all services (Identity, Cashier, Game-Server, Client-Web)
-docker-compose up
+docker compose up
 
 # If you make changes to package.json or Dockerfiles, rebuild:
-docker-compose up --build
+docker compose up --build
 ```
 
 - **Cashier API**: http://localhost:3000
