@@ -8,3 +8,4 @@ trigger: always_on
 2. **Package Manager**: **Yarn** is the mandatory package manager. Do not use npm or pnpm.
 3. **Methodology**: Follow a strict **TDD (Test-Driven Development)** approach for all service development.
 4. **Architecture**: Respect the **Standalone Services** (Poly-repo) structure.
+5. **Git**: No automatic commits or pushes should be performed without the explicit consent of the developer.
