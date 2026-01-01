@@ -6,7 +6,16 @@ services:
     restart: unless-stopped
 
   cashier:
-    image: ${CASHIER_IMAGE:-cortesa/link-wars-cashier:latest}
+    build:
+      context: .
+      dockerfile: services/cashier/Dockerfile
+      target: development
+    volumes:
+      - ./services/cashier/src:/app/services/cashier/src
+    environment:
+      - PORT=3000
+    ports:
+      - "3000:3000"
     depends_on:
       - identity
     networks:
@@ -14,7 +23,16 @@ services:
     restart: unless-stopped
 
   game-server:
-    image: ${GAME_SERVER_IMAGE:-cortesa/link-wars-game-server:latest}
+    build:
+      context: .
+      dockerfile: services/game-server/Dockerfile
+      target: development
+    volumes:
+      - ./services/game-server/src:/app/services/game-server/src
+    environment:
+      - PORT=2567
+    ports:
+      - "2567:2567"
     depends_on:
       - identity
     networks:
@@ -22,7 +40,14 @@ services:
     restart: unless-stopped
 
   client-web:
-    image: ${CLIENT_WEB_IMAGE:-cortesa/link-wars-client-web:latest}
+    build:
+      context: .
+      dockerfile: services/client-web/Dockerfile
+      target: development
+    volumes:
+      - ./services/client-web:/app/services/client-web
+    ports:
+      - "5173:5173"
     depends_on:
       - game-server
     networks:

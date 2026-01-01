@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.vscode
+.agent
+*.log
+.DS_Store
+yarn-error.log
+.env*
