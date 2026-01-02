@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run tests for all services with test scripts
+echo "🧪 Running tests before push..."
+
+# Array to track failed services
+failed_services=""
+
+# Test each service
+for service in cashier game-server game-client web-portal; do
+  echo "\n📦 Testing $service..."
+  if yarn workspace $service test; then
+    echo "✅ $service tests passed"
+  else
+    echo "❌ $service tests failed"
+    failed_services="$failed_services $service"
+  fi
+done
+
+# Check if any service failed
+if [ -n "$failed_services" ]; then
+  echo "\n❌ Tests failed in:$failed_services"
+  echo "⚠️  Push aborted. Please fix the failing tests before pushing."
+  exit 1
+fi
+
+echo "\n✅ All tests passed! Proceeding with push..."
+exit 0
