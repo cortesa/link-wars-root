@@ -1,0 +1,138 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import Lobby from '../Lobby';
+
+// Mock useNavigate
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
+// Mock Header component
+vi.mock('../../components/Header', () => ({
+  default: ({ onMenuToggle }: { onMenuToggle: () => void }) => (
+    <header data-testid="header">
+      <button onClick={onMenuToggle}>Menu</button>
+    </header>
+  ),
+}));
+
+describe('Lobby - Mobile Layout', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // Set mobile viewport
+    global.innerWidth = 375;
+    global.innerHeight = 667;
+  });
+
+  it('should render banner ad at the top', () => {
+    render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const banner = screen.getByText('Banner Ad');
+    expect(banner).toBeInTheDocument();
+  });
+
+  it('should render game thumbnail', () => {
+    render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const thumbnail = screen.getByTitle(/Tower Wars - Thumbnail/i);
+    expect(thumbnail).toBeInTheDocument();
+    expect(thumbnail).toHaveAttribute('src', 'http://localhost:5174/thumbnail');
+  });
+
+  it('should render game title and description below iframe', () => {
+    render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const title = screen.getByRole('heading', { name: /Tower Wars/i });
+    const description = screen.getByText(/Strategy meets chaos/i);
+    
+    expect(title).toBeInTheDocument();
+    expect(description).toBeInTheDocument();
+  });
+
+  it('should render Play now button', () => {
+    render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const playButton = screen.getByRole('button', { name: /Play now/i });
+    expect(playButton).toBeInTheDocument();
+  });
+
+  it('should navigate to game page when Play now is clicked', () => {
+    render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const playButton = screen.getByRole('button', { name: /Play now/i });
+    fireEvent.click(playButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith('/game/tower-wars');
+  });
+
+  it('should have correct layout structure (banner → iframe → game info)', () => {
+    const { container } = render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const content = container.querySelector('[class*="content"]');
+    expect(content).toBeInTheDocument();
+
+    // Check order: banner first, then game wrapper with iframe and info
+    const children = content?.children;
+    expect(children?.[0]?.className).toContain('bannerSection');
+    expect(children?.[1]?.tagName).toBe('MAIN');
+  });
+
+  it('should open menu overlay when hamburger is clicked', () => {
+    render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const menuButton = screen.getByText('Menu');
+    fireEvent.click(menuButton);
+
+    const overlay = screen.getByText('Leaderboard');
+    expect(overlay).toBeInTheDocument();
+  });
+
+  it('should not load game iframe initially', () => {
+    render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const gameIframes = screen.queryAllByTitle('Tower Wars');
+    const thumbnailIframe = screen.getByTitle(/Tower Wars - Thumbnail/i);
+    
+    // Should only have thumbnail iframe, not game iframe
+    expect(thumbnailIframe).toBeInTheDocument();
+    expect(gameIframes.length).toBe(0);
+  });
+});

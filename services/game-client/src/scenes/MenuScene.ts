@@ -10,7 +10,7 @@ export class MenuScene extends Phaser.Scene {
     const height = this.cameras.main.height;
 
     // Title
-    const title = this.add.text(width / 2, height / 3, 'LINK WARS', {
+    const title = this.add.text(width / 2, height / 3, 'TOWER WARS', {
       fontSize: '64px',
       color: '#ffffff',
       fontStyle: 'bold',
@@ -21,7 +21,7 @@ export class MenuScene extends Phaser.Scene {
     const subtitle = this.add.text(
       width / 2,
       height / 3 + 80,
-      'Tower War Multiplayer Game',
+      'Multiplayer Tower Defense Game',
       {
         fontSize: '24px',
         color: '#cccccc',
