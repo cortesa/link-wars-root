@@ -60,9 +60,33 @@ We use **Biome** for everything. It's incredibly fast.
 - `services/`: Contains the standalone services.
 - `Docs/`: High-level architecture, data models, and guides.
 
-## 5. Adding a New Feature (Example)
-1.  **Define the Requirement**: Read the architecture docs in `Docs/`.
-2.  **Write a Failing Test**: Create a test file in `services/<service>/tests/unit/`.
-3.  **Run Tests**: `yarn test` (verify it fails).
-4.  **Implement**: Write the minimal code to pass the test.
-5.  **Refactor**: Clean up the code and run `yarn format`.
+## 5. Adding a New Feature (TDD + MVP Pattern)
+
+We follow a strict **TDD methodology** combined with an **MVP development pattern** for incremental delivery.
+
+### MVP Levels
+
+| Level | Focus | Description |
+|-------|-------|-------------|
+| **MVP-0** | Structure | Minimal working implementation with hardcoded values, no external integrations |
+| **MVP-1** | Functionality | Real integrations, persistence, core features working end-to-end |
+| **MVP-2** | Polish | Error handling, edge cases, loading states, accessibility |
+
+### Workflow
+
+1. **Define the Requirement**: Read the architecture docs in `Docs/`.
+2. **Write a Failing Test**: Create a test file in `services/<service>/src/__tests__/`.
+3. **Run Tests**: `yarn test` (verify it fails).
+4. **Implement MVP-0**: Write minimal code to pass the test.
+5. **Iterate**: Add more tests, implement MVP-1, then MVP-2.
+6. **Refactor**: Clean up the code and run `yarn format`.
+
+### Example: Adding Authentication to Web Portal
+
+```
+MVP-0: AuthContext with mock state, login button triggers console.log
+MVP-1: Real Keycloak integration, token persistence, protected routes
+MVP-2: Token refresh, error handling, loading spinners
+```
+
+Each level must pass all tests before proceeding to the next.

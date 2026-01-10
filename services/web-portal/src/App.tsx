@@ -1,19 +1,31 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthGuard, AuthProvider } from './auth';
 import Layout from './components/Layout';
-import Lobby from './pages/Lobby';
+import Callback from './pages/Callback';
 import GamePage from './pages/GamePage';
+import Lobby from './pages/Lobby';
 import './index.css';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Lobby />} />
-          <Route path="/game/:gameSlug" element={<GamePage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Lobby />} />
+            <Route
+              path="/game/:gameSlug"
+              element={
+                <AuthGuard>
+                  <GamePage />
+                </AuthGuard>
+              }
+            />
+            <Route path="/callback" element={<Callback />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   )
 }
 

@@ -1,21 +1,27 @@
-import { useState } from 'react';
+import { useAuth } from '../auth';
 import styles from './UserMenu.module.css';
 
 function UserMenu() {
-  const [isAuthenticated] = useState(false); // TODO: Connect to auth context
+  const { isAuthenticated, isLoading, user, login, logout } = useAuth();
+
+  if (isLoading) {
+    return <div className={styles.loading}>...</div>;
+  }
 
   if (!isAuthenticated) {
     return (
-      <button type="button" className={styles.loginBtn}>
+      <button type="button" className={styles.loginBtn} onClick={() => login()}>
         Login
       </button>
     );
   }
 
-  // TODO: Render avatar and account menu when authenticated
   return (
-    <div className={styles.userAvatar}>
-      <img src="/default-avatar.png" alt="User Avatar" />
+    <div className={styles.userMenu}>
+      <span className={styles.username}>{user?.username}</span>
+      <button type="button" className={styles.logoutBtn} onClick={logout}>
+        Logout
+      </button>
     </div>
   );
 }

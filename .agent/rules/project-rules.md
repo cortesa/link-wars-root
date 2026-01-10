@@ -19,3 +19,8 @@ trigger: always_on
      - Empty files or unused dependencies
    - Prefer editing existing files over creating new ones.
    - When removing functionality, ensure all related code is also removed (tests, styles, imports).
+7. **MVP Development Pattern**: For new features, follow this incremental approach:
+   - **MVP-0**: Minimal working implementation (hardcoded values, basic structure, no external integrations)
+   - **MVP-1**: Add persistence, real integrations, and core functionality
+   - **MVP-2**: Error handling, edge cases, loading states, and polish
+   - Each MVP level must pass all tests before proceeding to the next.
