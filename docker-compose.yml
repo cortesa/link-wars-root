@@ -5,6 +5,8 @@ services:
       dockerfile: services/identity/Dockerfile
       target: development
     image: ${IDENTITY_IMAGE:-cortesa/link-wars-identity:latest}
+    volumes:
+      - ./services/identity/realm-config:/opt/keycloak/data/import
     environment:
       - KC_DB=postgres
       - KC_DB_URL=jdbc:postgresql://postgres_identity:5432/keycloak

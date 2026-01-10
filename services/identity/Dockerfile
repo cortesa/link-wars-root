@@ -9,9 +9,17 @@ FROM base AS development
 # Enable health and metrics in dev
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev"]
+
+# Copy realm configuration for auto-import on startup
+COPY services/identity/realm-config/ /opt/keycloak/data/import/
+
+# Start with realm import enabled (imports from /opt/keycloak/data/import/)
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--import-realm"]
 
 FROM base AS production
+# Copy realm configuration for auto-import on startup
+COPY services/identity/realm-config/ /opt/keycloak/data/import/
+
 # Build-time optimizations for production
 # RUN /opt/keycloak/bin/kc.sh build
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start", "--import-realm"]
